@@ -1,21 +1,16 @@
 import mongoose from "mongoose";
 import Post from "../models/api.model.js";
 
-
+// Create User
 const createUser = async (req, res) => {
     try {
-        const { id,name, description } = req.body;
-        //console.log(req.body)
+        const { name, description } = req.body;
 
-        if ([id,name, description].some((field) => field?.trim() === "")) {
+        if ([name, description].some((field) => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
-        const user = await Post.create({
-            id,
-            name,
-            description,
-        });
+        const user = await Post.create({ name, description });
 
         return res.status(201).json({
             message: "User created successfully",
@@ -29,7 +24,7 @@ const createUser = async (req, res) => {
     }
 };
 
-
+// Get All Users
 const getUsers = async (req, res) => {
     try {
         const users = await Post.find();
@@ -45,10 +40,14 @@ const getUsers = async (req, res) => {
     }
 };
 
-
+// Get User by ID
 const getUserById = async (req, res) => {
     try {
         const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Invalid ID format" });
+        }
+
         const user = await Post.findById(id);
 
         if (!user) {
@@ -67,13 +66,16 @@ const getUserById = async (req, res) => {
     }
 };
 
-
+// Update User
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description } = req.body;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Invalid ID format" });
+        }
 
-        if ([id,name, description].some((field) => field?.trim() === "")) {
+        const { name, description } = req.body;
+        if ([name, description].some((field) => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
@@ -99,10 +101,14 @@ const updateUser = async (req, res) => {
     }
 };
 
-
+// Delete User
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Invalid ID format" });
+        }
+
         const user = await Post.findByIdAndDelete(id);
 
         if (!user) {

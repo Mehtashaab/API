@@ -5,7 +5,8 @@ const app = express()
 app.use(express.json())
 
 
-import router from "./src/routes/post.route.js"
+import router from "./src/routes/api.route.js"
+
 
 app.use("/api", router)
 

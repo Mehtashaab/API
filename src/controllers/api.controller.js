@@ -1,47 +1,47 @@
 import mongoose from "mongoose";
 import Post from "../models/api.model.js";
 
-// Create User
-const createUser = async (req, res) => {
+// Create post
+const createPost = async (req, res) => {
     try {
-        const {  name, description } = req.body;
+        const {  title, description } = req.body;
         
 
-        if ([name, description].some((field) => field?.trim() === "")) {
+        if ([title, description].some((field) => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
-        const user = await Post.create({ name, description });
+        const post = await Post.create({ title, description });
 
         return res.status(201).json({
-            message: "Api data created successfully",
-            user,
+            message: "Post created successfully",
+            post,
         });
     } catch (error) {
-        console.error("Error creating user:", error.message);
+        console.error("Error creating post:", error.message);
         return res.status(500).json({
             error: "Internal server error. Please try again later.",
         });
     }
 };
 
-// Get All Users
-const getUsers = async (req, res) => {
+// Get All posts
+const getPosts = async (req, res) => {
     try {
-        const users = await Post.find();
+        const posts = await Post.find();
         return res.status(200).json({
-            message: "Api data retrieved successfully",
-            users,
+            message: "Post retrieved successfully",
+            posts,
         });
     } catch (error) {
-        console.error("Error retrieving users:", error.message);
+        console.error("Error retrieving posts:", error.message);
         return res.status(500).json({
             error: "Internal server error. Please try again later.",
         });
     }
 };
 
-const getUserById = async (req, res) => {
+const getPostById = async (req, res) => {
     const id = req.params.id;
     console.log(id);
 
@@ -53,41 +53,41 @@ const getUserById = async (req, res) => {
             });
         }
 
-        // Find the user by ID
-        const user = await Post.findOne({ _id: id });
+        // Find the post by ID
+        const post = await Post.findOne({ _id: id });
 
-        if (!user) {
+        if (!post) {
             return res.status(404).json({
-                message: "User not found",
+                message: "post not found",
             });
         }
 
         return res.status(200).json({
-            message: "Api data retrieved successfully",
-            user,
+            message: "Post retrieved successfully",
+            post,
         });
     } catch (error) {
-        console.error("Error retrieving user:", error.message);
+        console.error("Error retrieving post:", error.message);
         return res.status(500).json({
             error: "Internal server error. Please try again later.",
         });
     }
 };
 
-const updateUser = async(req, res) => {
-    const {name,description} = req.body
+const updatePost = async(req, res) => {
+    const {title,description} = req.body
 
-    if (!(name || description)) {
+    if (!(title || description)) {
         return res.status(400)
         .json({error: "All fields are required"})
         
     }
 
-    const user = await Post.findByIdAndUpdate(
+    const post = await Post.findByIdAndUpdate(
        {_id:req.params.id} ,
         {
             $set: {
-                name,
+                title,
                 description
             }
         },
@@ -95,32 +95,32 @@ const updateUser = async(req, res) => {
         
     )
     return res.status(200).json({
-        message: "Api data update successfully",
-        user,
+        message: "Post update successfully",
+        post,
 })
 }
 
-const deleteUser = async (req, res) => {
+const deletePost = async (req, res) => {
     try {
-        // Find the user by ID
-        const user = await Post.findByIdAndDelete(req.params.id);
+        // Find the post by ID
+        const post = await Post.findByIdAndDelete(req.params.id);
         
-        if (!user) {
+        if (!post) {
             return res.status(404).json({
-                message: "User not found",
+                message: "post not found",
             });
         }
         
         return res.status(200).json({
-            message: "Api data deleted successfully",
+            message: "Post deleted successfully",
         });
         
     } catch (error) {
-        console.error("Error deleting user:", error.message);
+        console.error("Error deleting post:", error.message);
         return res.status(500).json({
             error: "Internal server error. Please try again later.",
         });
     }
     }
 
-export { createUser, getUsers,getUserById,updateUser,deleteUser };
+export { createPost, getPosts,getPostById,updatePost,deletePost };

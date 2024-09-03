@@ -5,7 +5,7 @@ const { Schema, model } = mongoose;
 
 const postSchema = new Schema({
     
-    name: {
+    title: {
         type: String,
         required: true,
         trim: true,
@@ -16,7 +16,7 @@ const postSchema = new Schema({
         trim: true,
     },
 }, {
-    timestamps: true, 
+    versionKey:false
 });
 
 

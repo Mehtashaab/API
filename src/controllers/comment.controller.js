@@ -78,7 +78,7 @@ const getCommentById = async (req, res) => {
 const updateComment = async(req, res) => {
     const {name,email,content} = req.body
 
-    if (!(name || email || content)) {
+    if (!( name || email || content)) {
         return res.status(400)
         .json({error: "All fields are required"})
         
@@ -88,6 +88,7 @@ const updateComment = async(req, res) => {
        {_id:req.params.id} ,
         {
             $set: {
+                
                 name,
                 email,
                 content
@@ -124,6 +125,5 @@ const deleteComment = async (req, res) => {
         });
     }
     }
-
-
+    
 export { createComment,getComment,getCommentById,updateComment,deleteComment};

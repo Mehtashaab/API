@@ -2,6 +2,7 @@ import { Router } from "express";
 import { createPost,getPosts,getPostById,updatePost, deletePost} from "../controllers/post.controller.js";
 import { createComment, deleteComment, getComment, getCommentById, updateComment } from "../controllers/comment.controller.js";
 
+
 const router = Router();
 
 router.route('/post')
@@ -21,8 +22,8 @@ router.route("/comment/:id")
     .delete(deleteComment)
 
 
-
-   
+    
+    
 
 
 

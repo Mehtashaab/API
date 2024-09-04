@@ -4,12 +4,12 @@ import { updatePost } from "./post.controller.js";
 
 const createComment = async(req,res)=>{
     try {
-        const {name,email,content} = req.body
+        const {postId,name,email,content} = req.body
 
-        if ([name, email,content].some((field) => field?.trim() === "")) {
+        if ([postId,name, email,content].some((field) => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
-        const comment = await Comment.create({name,email,content})
+        const comment = await Comment.create({postId,name,email,content})
         return res.status(201).
         json({
             message:"comment is posted",
@@ -63,7 +63,7 @@ const getCommentById = async (req, res) => {
         }
 
         return res.status(200).json({
-            message: "Post retrieved successfully",
+            message: "Comment retrieved successfully",
             comment,
         });
     } catch (error) {
@@ -76,9 +76,9 @@ const getCommentById = async (req, res) => {
 
 
 const updateComment = async(req, res) => {
-    const {name,email,content} = req.body
+    const {postId,name,email,content} = req.body
 
-    if (!( name || email || content)) {
+    if (!( postId || name || email || content)) {
         return res.status(400)
         .json({error: "All fields are required"})
         
@@ -88,7 +88,7 @@ const updateComment = async(req, res) => {
        {_id:req.params.id} ,
         {
             $set: {
-                
+                postId,
                 name,
                 email,
                 content

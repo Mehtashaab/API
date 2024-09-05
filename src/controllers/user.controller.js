@@ -23,40 +23,52 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 
 const createUser = async (req, res) => {
     try {
-        
-        const  { fullname,username, email, password }  = req.body;
-        // console.log(req.body.email)
-        
-        
-        if ([fullname, username, email, password].some((field) => field?.trim() === "")) {
+        const { fullname, username, email, password } = req.body;
+        console.log(req.body)
+
+        // Validate if all fields are provided
+        if ([fullname, username, email, password].some(field => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
-        
+
+        // Check if user already exists
         const userExists = await User.findOne({ $or: [{ username }, { email }] });
-        
         if (userExists) {
             return res.status(400).json({ error: "User already exists" });
         }
-        
-       
+
+        // Handle avatar file (since multer.single('avatar') is used, req.file is used, not req.files)
+        const avatarFile = req.file;
+        if (!avatarFile) {
+            return res.status(400).json({ message: "Avatar file is required" });
+        }
+
+        // Save the avatar's file path and content type
+        const avatar = {
+            filePath: avatarFile.path,       // Path to the saved file on disk
+            contentType: avatarFile.mimetype // Image MIME type (e.g., 'image/png')
+        };
+
+        // Create the user and save the avatar metadata in the database
         const user = await User.create({
             fullname,
             username,
+            email,
             password,
-            email
-        })
-        
+            avatar
+        });
+
         return res.status(201).json({
             message: "User created successfully",
             user,
         });
-        } catch (error) {
-            console.error("Error creating user:", error.message);
-            return res.status(500).json({
-                error: "Internal server error. Please try again later.",
-            });
+    } catch (error) {
+        console.error("Error creating user:", error.message);
+        return res.status(500).json({
+            error: "Internal server error. Please try again later.",
+        });
     }
-}
+};
 
 const userLogin = async(req,res)=>{
    

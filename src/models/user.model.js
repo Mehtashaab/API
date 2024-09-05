@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    avatar: {
+        filePath: String,      // Path to the file on disk
+        contentType: String,   // Store MIME type (e.g., 'image/png')
+      },
     password:{
         type: String,
         required: true,

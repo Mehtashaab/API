@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { createPost,getPosts,getPostById,updatePost, deletePost} from "../controllers/post.controller.js";
 import { createComment, deleteComment, getComment, getCommentById, updateComment } from "../controllers/comment.controller.js";
-import { createUser } from "../controllers/user.controller.js";
+import { createUser, userLogin, userLogout } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/auth.middleware.js";
 
 
 const router = Router();
@@ -22,6 +23,8 @@ router.route("/comment/:id")
     .put(updateComment)
     .delete(deleteComment)
 router.route('/register').post(createUser)
+router.route('/login').post(userLogin)
+router.route('/logout').post(verifyJWT,userLogout)
 
 
     

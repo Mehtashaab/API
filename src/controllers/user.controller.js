@@ -39,13 +39,14 @@ const createUser = async (req, res) => {
 
         // Handle avatar file (since multer.single('avatar') is used, req.file is used, not req.files)
         const avatarFile = req.file;
+        console.log(avatarFile)
         if (!avatarFile) {
             return res.status(400).json({ message: "Avatar file is required" });
         }
 
         // Save the avatar's file path and content type
         const avatar = {
-            filePath: avatarFile.path,       // Path to the saved file on disk
+            filePath: `public/temp/${avatarFile.filename}`,       // Path to the saved file on disk
             contentType: avatarFile.mimetype // Image MIME type (e.g., 'image/png')
         };
 
@@ -57,10 +58,16 @@ const createUser = async (req, res) => {
             password,
             avatar
         });
+        const avatarUrl = `${req.protocol}://${req.get('host')}/${user.avatar.filePath}`
 
         return res.status(201).json({
             message: "User created successfully",
-            user,
+            user: {
+                fullname,
+                username,
+                email,
+                avatarUrl  // Include the URL to access the image
+            }
         });
     } catch (error) {
         console.error("Error creating user:", error.message);

@@ -10,8 +10,9 @@ const createPost = async (req, res) => {
         if ([title, description].some((field) => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
+        const userId = req.user._id;
 
-        const post = await Post.create({ title, description });
+        const post = await Post.create({ title, description,userId });
 
         return res.status(201).json({
             message: "Post created successfully",

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import {Comment} from "../models/comment.model.js"
-import { updatePost } from "./post.controller.js";
+
 
 const createComment = async(req,res)=>{
     try {
@@ -9,7 +9,9 @@ const createComment = async(req,res)=>{
         if ([postId,name, email,content].some((field) => field?.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
-        const comment = await Comment.create({postId,name,email,content})
+        const userId = req.user._id;
+
+        const comment = await Comment.create({postId,userId,name,email,content})
         return res.status(201).
         json({
             message:"comment is posted",

@@ -8,20 +8,20 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route('/post')
-    .post(createPost)  
-    .get(getPosts); 
+    .post(verifyJWT,createPost)  
+    .get(verifyJWT,getPosts); 
 router.route('/post/:id')
-    .get(getPostById)
-    .put(updatePost)
-    .delete(deletePost)
+    .get(verifyJWT,getPostById)
+    .put(verifyJWT,updatePost)
+    .delete(verifyJWT,deletePost)
 
 router.route('/comment')
-    .post(createComment)
-    .get(getComment)
+    .post(verifyJWT,createComment)
+    .get(verifyJWT,getComment)
 router.route("/comment/:id")
-    .get(getCommentById)
-    .put(updateComment)
-    .delete(deleteComment)
+    .get(verifyJWT,getCommentById)
+    .put(verifyJWT,updateComment)
+    .delete(verifyJWT,deleteComment)
 router.route('/register').post(createUser)
 router.route('/login').post(userLogin)
 router.route('/logout').post(verifyJWT,userLogout)

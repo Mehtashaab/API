@@ -1,6 +1,8 @@
 import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 
+
+
 const generateAccessAndRefereshTokens = async(userId) =>{
     try {
         const user = await User.findById(userId)
@@ -21,10 +23,11 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 }
 
 
+
+
 const createUser = async (req, res) => {
     try {
         const { fullname, username, email, password } = req.body;
-        console.log(req.body)
 
         // Validate if all fields are provided
         if ([fullname, username, email, password].some(field => field?.trim() === "")) {
@@ -37,20 +40,19 @@ const createUser = async (req, res) => {
             return res.status(400).json({ error: "User already exists" });
         }
 
-        // Handle avatar file (since multer.single('avatar') is used, req.file is used, not req.files)
+        // Handle avatar file
         const avatarFile = req.file;
-        console.log(avatarFile)
         if (!avatarFile) {
             return res.status(400).json({ message: "Avatar file is required" });
         }
 
-        // Save the avatar's file path and content type
+        // Save avatar details in user data
         const avatar = {
             filePath: `public/temp/${avatarFile.filename}`,       // Path to the saved file on disk
-            contentType: avatarFile.mimetype // Image MIME type (e.g., 'image/png')
+            contentType: avatarFile.mimetype                      // Image MIME type (e.g., 'image/png')
         };
 
-        // Create the user and save the avatar metadata in the database
+        // Create the user and save avatar metadata in the database
         const user = await User.create({
             fullname,
             username,
@@ -58,7 +60,9 @@ const createUser = async (req, res) => {
             password,
             avatar
         });
-        const avatarUrl = `${req.protocol}://${req.get('host')}/${user.avatar.filePath}`
+
+        // Generate URL to access the avatar
+        const avatarUrl = `${req.protocol}://${req.get('host')}/temp/${avatarFile.filename}`;
 
         return res.status(201).json({
             message: "User created successfully",
@@ -71,11 +75,11 @@ const createUser = async (req, res) => {
         });
     } catch (error) {
         console.error("Error creating user:", error.message);
-        return res.status(500).json({
-            error: "Internal server error. Please try again later.",
-        });
+        return res.status(500).json({ error: "Internal server error. Please try again later." });
     }
 };
+
+
 
 const userLogin = async(req,res)=>{
    

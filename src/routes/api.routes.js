@@ -4,6 +4,10 @@ import { createComment, deleteComment, getComment, getCommentById, updateComment
 import { createUser, userLogin, userLogout } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+// import path from "path";
+// import { fileURLToPath } from 'url';
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 
 const router = Router();
@@ -24,9 +28,11 @@ router.route("/comment/:id")
     .put(verifyJWT,updateComment)
     .delete(verifyJWT,deleteComment)
 
-router.post('/register', upload.single('avatar'), createUser);
+router.route('/register').post( upload.single('avatar'), createUser);
+
 
 router.route('/login').post(userLogin)
+
 router.route('/logout').post(verifyJWT,userLogout)
 
 

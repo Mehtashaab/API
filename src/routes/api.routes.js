@@ -12,21 +12,35 @@ import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
+// router.route('/post')
+//     .post(verifyJWT,createPost)  
+//     .get(verifyJWT,getPosts); 
 router.route('/post')
-    .post(verifyJWT,createPost)  
-    .get(verifyJWT,getPosts); 
-router.route('/post/:id')
-    .get(verifyJWT,getPostById)
-    .put(verifyJWT,updatePost)
-    .delete(verifyJWT,deletePost)
+    .post(createPost)  
+    .get(getPosts); 
+// router.route('/post/:id')
+//     .get(verifyJWT,getPostById)
+//     .put(verifyJWT,updatePost)
+//     .delete(verifyJWT,deletePost)
 
-router.route('/comment')
-    .post(verifyJWT,createComment)
-    .get(verifyJWT,getComment)
+router.route('/post/:id')
+    .get(getPostById)
+    .put(updatePost)
+    .delete(deletePost)
+// router.route('/comment')
+//     .post(verifyJWT,createComment)
+//     .get(verifyJWT,getComment)
+    router.route('/comment')
+    .post(createComment)
+    .get(getComment)
+// router.route("/comment/:id")
+//     .get(verifyJWT,getCommentById)
+//     .put(verifyJWT,updateComment)
+//     .delete(verifyJWT,deleteComment)
 router.route("/comment/:id")
-    .get(verifyJWT,getCommentById)
-    .put(verifyJWT,updateComment)
-    .delete(verifyJWT,deleteComment)
+    .get(getCommentById)
+    .put(updateComment)
+    .delete(deleteComment)
 
 router.route('/register').post( upload.single('avatar'), createUser);
 
@@ -34,6 +48,7 @@ router.route('/register').post( upload.single('avatar'), createUser);
 router.route('/login').post(userLogin)
 
 router.route('/logout').post(verifyJWT,userLogout)
+
 
 
     

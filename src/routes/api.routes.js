@@ -4,6 +4,7 @@ import { createComment, deleteComment, getComment, getCommentById, updateComment
 import { createUser, userLogin, userLogout } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import { sendTestEmail } from "../utils/mail.js";
 // import path from "path";
 // import { fileURLToPath } from 'url';
 // const __filename = fileURLToPath(import.meta.url);
@@ -48,6 +49,8 @@ router.route('/register').post( upload.single('avatar'), createUser);
 router.route('/login').post(userLogin)
 
 router.route('/logout').post(verifyJWT,userLogout)
+
+router.route('/send-mail').post(sendTestEmail)
 
 
 

@@ -6,6 +6,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { sendTestEmail } from "../utils/testMail.js";
 import { sendGmail } from "../utils/gmail.js";
+import { sendEmail } from "../utils/smtpMail.js";
 // import path from "path";
 // import { fileURLToPath } from 'url';
 // const __filename = fileURLToPath(import.meta.url);
@@ -51,9 +52,9 @@ router.route('/login').post(userLogin)
 
 router.route('/logout').post(verifyJWT,userLogout)
 
-router.route('/send-mail').post(sendTestEmail)
+router.route('/send-testmail').post(sendTestEmail)
 router.route('/send-gmail').post(sendGmail)
-
+router.route('/send-mail').post(sendEmail)
 
 
     

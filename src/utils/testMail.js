@@ -22,7 +22,7 @@ async function sendTestEmail(req, res) {
       from: ' <abhishekmehta@.email>', // sender address
       to: "bar@example.com, baz@example.com", // list of receivers
       subject: "Hello ✔", // Subject line
-      text: "Hello world lets start to develop something", // plain text body
+      text: "Hello world lets start to develop something with nodejs and express", // plain text body
       html: "<b>Hello world?</b>", // html body
     };
 
